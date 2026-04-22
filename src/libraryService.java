@@ -12,15 +12,16 @@ public class libraryService implements libraryOperations {
     private List<Book> bookList = new ArrayList<>();
     private Map<Integer,Integer> issuedBooks = new HashMap<>();
     private Integer Max_storage = 7;
+
     //Key- BookId;
     //Value- UserId;
 
-    // public libraryService() {
-    //     bookList.add(new Book(101, "Clean Code", "Robert Martin", false));
-    //     bookList.add(new Book(102, "Effective Java", " Joshua Bloch", true));
-    //     bookList.add(new Book(103, "Spring in Action", " Craig Walls", false));
-    //     bookList.add(new Book(104, "Microservices Patterns", " Chris Richardson", false));
-    // }
+    public libraryService() {
+        bookList.add(new Book(101, "Clean Code", "Robert Martin", false));
+        bookList.add(new Book(102, "Effective Java", " Joshua Bloch", true));
+        bookList.add(new Book(103, "Spring in Action", " Craig Walls", false));
+        bookList.add(new Book(104, "Microservices Patterns", " Chris Richardson", false));
+    }
 
     public void addBooks(Book book) throws IndexOutOfBoundsException
     {
@@ -32,7 +33,7 @@ public class libraryService implements libraryOperations {
             bookList.stream().forEach(System.out::println);
         }
         else{
-            throw new IndexOutOfBoundsException();            
+            throw new IndexOutOfBoundsException("Books Index is Full , can't add new one");            
         }
         
     }
@@ -48,18 +49,23 @@ public class libraryService implements libraryOperations {
         }
         
     }
-    
-    public void issuedOrAvailableBooks()
+
+    public void issuedOrAvailableBooks() throws BookNotFoundException
     {
-        boolean foundIssued = false;
-        for(Book book : bookList){
-            if(book.isIssued()) {
-                System.out.println("Book: " + book.getTittle() + " (Issued)");
-                foundIssued = true;
-            }
+        if(bookList.isEmpty()) {
+            throw new BookNotFoundException("No books available");
         }
-        if(!foundIssued) {
-            System.out.println("No issued books found");
+        else
+        {
+            for(Book book : bookList)
+            {
+                if(book.isIssued()) {
+                    System.out.println("Book: " + book.getTittle() + " (Issued)");
+                }
+                else{
+                    System.out.println("Book: " + book.getTittle() + " (Available)");
+                }
+            }
         }
     }
 
@@ -75,10 +81,8 @@ public class libraryService implements libraryOperations {
                 System.out.println("Book Issued Succesfully ");
                 return;
             }
-            else{
-                throw new BookAlreadyIssuedException("Book not Available to issue");
-            }
         }
+        throw new BookAlreadyIssuedException("Book not Available to issue");
     }
 
     //return books
@@ -92,9 +96,7 @@ public class libraryService implements libraryOperations {
                 System.out.println("Book removed Sucessfully");
                 return;
             }
-            else{
-                throw new ReturnNotAcceptedException("Book Not Found or not issued");
-            }
         }
+        throw new ReturnNotAcceptedException("Book Not Found or not issued");
     }
 }

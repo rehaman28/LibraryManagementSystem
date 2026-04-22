@@ -1,5 +1,6 @@
 import java.util.Scanner;
 
+import Exception.BookAlreadyIssuedException;
 import Exception.BookNotFoundException;
 import Exception.ReturnNotAcceptedException;
 
@@ -27,8 +28,11 @@ public class App {
                         String title = sc.nextLine();
                         System.out.print("Enter Author: ");
                         String author = sc.nextLine();
-
-                        libraryService.addBooks((new Book(id, title, author, false)));
+                        try {
+                            libraryService.addBooks((new Book(id, title, author, false)));
+                        } catch (IndexOutOfBoundsException e) {
+                            System.out.println(e.getMessage());
+                        }
                         break;
                     case 2:
                        try {
@@ -42,7 +46,12 @@ public class App {
                         int bId = sc.nextInt();
                         System.out.print("Enter User ID: ");
                         int uId = sc.nextInt();
-                        libraryService.issueBooks(bId, uId);
+                       try 
+                       {
+                            libraryService.issueBooks(bId, uId);
+                       } catch (BookAlreadyIssuedException e) {
+                            System.out.println(e.getMessage());
+                       }
                         break;
                     case 4:
                         System.out.print("Enter Book ID: ");
@@ -55,7 +64,12 @@ public class App {
                         
                         break;
                     case 5: 
-                        libraryService.issuedOrAvailableBooks();
+                       try 
+                       {
+                         libraryService.issuedOrAvailableBooks();
+                       }catch (BookNotFoundException e) {
+                        System.out.println(e.getMessage());
+                       }
                         break;
                     case 6:
                         System.exit(0);
