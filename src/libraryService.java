@@ -1,7 +1,9 @@
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import Exception.BookAlreadyIssuedException;
 import Exception.BookNotFoundException;
@@ -39,25 +41,19 @@ public class libraryService implements libraryOperations {
     }
     //Find Book Method  need to be implemented
     public void findBook(int id) throws BookNotFoundException {
-        for(Book book : bookList){
-            if (book.getBookId() == id) {
-                System.out.println("Book Found: "+ book.getBookId() +" "+ book.getTittle());
-                return;
-            }
-        }
-        throw new BookNotFoundException("Book Not Found");
+        Optional<Book> book = bookList.stream().filter(b -> b.getBookId() == id).findFirst();
+        Book foundBook = book.orElseThrow(() -> new BookNotFoundException("Book with ID " + id + " not found"));
+        System.out.println("Book Found: " + foundBook.getTittle());
     }
 
     public void viewBooks() throws BookNotFoundException
     {
         if(!bookList.isEmpty())
         {
-            bookList.forEach((entry) -> System.out.println(entry.getBookId() + " " + entry.getTittle()));
+            bookList.forEach((b) -> System.out.println(b.getBookId() + " " + b.getTittle()));
         }
-        else{
+        else
             throw new BookNotFoundException(" Book are Empty");
-        }
-        
     }
 
     public void issuedOrAvailableBooks() throws BookNotFoundException
@@ -67,15 +63,7 @@ public class libraryService implements libraryOperations {
         }
         else
         {
-            for(Book book : bookList)
-            {
-                if(book.isIssued()) {
-                    System.out.println("Book: " + book.getTittle() + " (Issued)");
-                }
-                else{
-                    System.out.println("Book: " + book.getTittle() + " (Available)");
-                }
-            }
+            bookList.forEach(entry-> System.out.println("Book:" + entry.getTittle() +(entry.isIssued()?" (Issued) ": " (Available)")));
         }
     }
 

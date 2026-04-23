@@ -6,7 +6,7 @@ public class Book {
     private boolean isIssued;
 
 
-    Book(int  id, String title, String author, Boolean issued){
+    Book(int  id, String title, String author, boolean issued){
         this.bookId =id;
         this.author = author;
         this.tittle = title;
@@ -16,7 +16,7 @@ public class Book {
         this.bookId =id;
         this.author = author;
         this.tittle = title;
-        
+        this.isIssued = false;
     }
 
 
