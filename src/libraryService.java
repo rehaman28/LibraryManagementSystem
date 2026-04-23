@@ -63,7 +63,10 @@ public class libraryService implements libraryOperations {
         }
         else
         {
-            bookList.forEach(entry-> System.out.println("Book:" + entry.getTittle() +(entry.isIssued()?" (Issued) ": " (Available)")));
+            bookList.stream()
+            .map( entry -> "Book: "+ entry.getTittle() + (entry.isIssued()?" (Issued) ": " (Available)"))
+            .forEach(System.out::println);
+            // bookList.forEach(entry-> System.out.println("Book:" + entry.getTittle() +(entry.isIssued()?" (Issued) ": " (Available)")));
         }
     }
 
