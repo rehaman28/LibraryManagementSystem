@@ -38,16 +38,14 @@ public class libraryService implements libraryOperations {
         
     }
     //Find Book Method  need to be implemented
-    public void findBook(int id)throws BookNotFoundException
-    {
+    public void findBook(int id) throws BookNotFoundException {
         for(Book book : bookList){
             if (book.getBookId() == id) {
                 System.out.println("Book Found: "+ book.getBookId() +" "+ book.getTittle());
-            }
-            else{
-                throw new BookNotFoundException("Book Not Found");
+                return;
             }
         }
+        throw new BookNotFoundException("Book Not Found");
     }
 
     public void viewBooks() throws BookNotFoundException
@@ -105,7 +103,7 @@ public class libraryService implements libraryOperations {
             {
                 book.setIssued(false);
                 issuedBooks.remove(bookId);
-                System.out.println("Book removed Sucessfully");
+                System.out.println("Book returned Sucessfully");
                 return;
             }
         }
