@@ -16,7 +16,8 @@ public class App {
                 System.out.println("3. Issue Book");
                 System.out.println("4. Return Book");
                 System.out.println("5. View Issued or Available Books");
-                System.out.println("6. Exit");
+                 System.out.println("6. Find book with Id");
+                System.out.println("7. Exit");
 
                 int choice = sc.nextInt();
                 switch (choice) {
@@ -71,7 +72,19 @@ public class App {
                         System.out.println(e.getMessage());
                        }
                         break;
-                    case 6:
+
+                    case 6: 
+                       System.out.println("Enter the book id: ");
+                       int bookId = sc.nextInt();
+                       try 
+                       {
+                            libraryService.findBook(bookId);
+                       }catch (BookNotFoundException e) 
+                       {
+                            System.out.println(e.getMessage());
+                       }
+                        break;
+                    case 7:
                         System.exit(0);
 
                     default:
