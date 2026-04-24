@@ -43,14 +43,14 @@ public class libraryService implements libraryOperations {
     public void findBook(int id) throws BookNotFoundException {
         Optional<Book> book = bookList.stream().filter(b -> b.getBookId() == id).findFirst();
         Book foundBook = book.orElseThrow(() -> new BookNotFoundException("Book with ID " + id + " not found"));
-        System.out.println("Book Found: " + foundBook.getTittle());
+        System.out.println("Book Found: " + foundBook.getTitle());
     }
 
     public void viewBooks() throws BookNotFoundException
     {
         if(!bookList.isEmpty())
         {
-            bookList.forEach((b) -> System.out.println(b.getBookId() + " " + b.getTittle()));
+            bookList.forEach((b) -> System.out.println(b.getBookId() + " " + b.getTitle()));
         }
         else
             throw new BookNotFoundException(" Book are Empty");
@@ -64,40 +64,60 @@ public class libraryService implements libraryOperations {
         else
         {
             bookList.stream()
-            .map( entry -> "Book: "+ entry.getTittle() + (entry.isIssued()?" (Issued) ": " (Available)"))
+            .map( entry -> "Book: "+ entry.getTitle() + (entry.isIssued()?" (Issued) ":" (Available)"))
             .forEach(System.out::println);
-            // bookList.forEach(entry-> System.out.println("Book:" + entry.getTittle() +(entry.isIssued()?" (Issued) ": " (Available)")));
+
+            // bookList.forEach(entry-> System.out.println("Book:" + entry.getTitle() +(entry.isIssued()?" (Issued) ":" (Available)"));
         }
     }
 
     //Issue Books
     public void issueBooks( int bookId, int userId) throws BookAlreadyIssuedException
     {
-        for(Book book : bookList)
-        {
-            if(book.getBookId()== bookId && !book.isIssued())
-            {
-                book.setIssued(true);
-                issuedBooks.put(bookId, userId);
-                System.out.println("Book Issued Succesfully ");
-                return;
-            }
-        }
-        throw new BookAlreadyIssuedException("Book not Available to issue");
+       Book book = bookList.stream()
+        .filter(b -> b.getBookId() == bookId && !b.isIssued())
+        .findFirst()
+        .orElseThrow(() ->  new BookAlreadyIssuedException("Book not Available to issue"));
+        book.setIssued(true);
+        issuedBooks.put(bookId, userId);
+        System.out.println("Book Issued Succesfully ");
+        
+        
+        // for(Book book : bookList)
+        // {
+        //     if(book.getBookId()== bookId && !book.isIssued())
+        //     {
+                
+        //         book.setIssued(true);
+        //         issuedBooks.put(bookId, userId);
+        //         System.out.println("Book Issued Succesfully ");
+        //         return;
+        //     }
+        // }
+        // throw new BookAlreadyIssuedException("Book not Available to issue");
     }
 
     //return books
     public void returnBook(int bookId) throws ReturnNotAcceptedException
     {
-        for( Book book: bookList){
-            if( book.getBookId() == bookId && book.isIssued())
-            {
-                book.setIssued(false);
-                issuedBooks.remove(bookId);
-                System.out.println("Book returned Sucessfully");
-                return;
-            }
-        }
-        throw new ReturnNotAcceptedException("Book Not Found or not issued");
+        Book book = bookList.stream()
+        .filter(b -> b.getBookId() == bookId && b.isIssued())
+        .findFirst()
+        .orElseThrow(() ->  new ReturnNotAcceptedException("Book Not Found or not issued"));
+
+        book.setIssued(false);
+        issuedBooks.remove(bookId);
+        System.out.println("Book returned Sucessfully");
+
+        // for( Book book: bookList){
+        //     if( book.getBookId() == bookId && book.isIssued())
+        //     {
+        //         book.setIssued(false);
+        //         issuedBooks.remove(bookId);
+        //         System.out.println("Book returned Sucessfully");
+        //         return;
+        //     }
+        // }
+        // throw new ReturnNotAcceptedException("Book Not Found or not issued");
     }
 }

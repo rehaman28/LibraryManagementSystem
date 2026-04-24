@@ -1,7 +1,7 @@
 public class Book {
     
     private int bookId;
-    private String tittle;
+    private String title;
     private String author;
     private boolean isIssued;
 
@@ -9,13 +9,13 @@ public class Book {
     Book(int  id, String title, String author, boolean issued){
         this.bookId =id;
         this.author = author;
-        this.tittle = title;
+        this.title = title;
         this.isIssued = issued;
     }
     Book(int  id, String title, String author){
         this.bookId =id;
         this.author = author;
-        this.tittle = title;
+        this.title = title;
         this.isIssued = false;
     }
 
@@ -30,13 +30,13 @@ public class Book {
     }
 
 
-    public String getTittle() {
-        return tittle;
+    public String getTitle() {
+        return title;
     }
 
 
-    public void setTittle(String tittle) {
-        this.tittle = tittle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
 
@@ -62,7 +62,7 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book [bookId=" + bookId + ", tittle=" + tittle + ", author=" + author + ", isIssued=" + isIssued + "]";
+        return "Book [bookId=" + bookId + ", title=" + title + ", author=" + author + ", isIssued=" + isIssued + "]";
     }
 
     
